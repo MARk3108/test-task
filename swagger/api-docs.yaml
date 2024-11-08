@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: Car Brands and Models API
+  description: API для управления брендами и моделями автомобилей
+  version: 1.0.0
+paths:
+  /api/car-brands:
+    get:
+      summary: Получить список всех брендов автомобилей
+      operationId: getCarBrands
+      tags:
+        - CarBrand
+      responses:
+        '200':
+          description: Список брендов автомобилей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarBrand'
+    post:
+      summary: Создать новый бренд автомобиля
+      operationId: createCarBrand
+      tags:
+        - CarBrand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarBrandRequest'
+      responses:
+        '201':
+          description: Бренд автомобиля создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarBrand'
+  /api/car-brands/{carBrand}:
+    put:
+      summary: Обновить информацию о бренде автомобиля
+      operationId: updateCarBrand
+      tags:
+        - CarBrand
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarBrandRequest'
+      responses:
+        '200':
+          description: Информация о бренде автомобиля обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarBrand'
+    delete:
+      summary: Удалить бренд автомобиля
+      operationId: deleteCarBrand
+      tags:
+        - CarBrand
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Бренд автомобиля удален
+
+  /api/car-brands/{carBrand}/models:
+    get:
+      summary: Получить список моделей для определенного бренда
+      operationId: getCarBrandModels
+      tags:
+        - CarBrandModel
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список моделей для указанного бренда
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarBrandModel'
+    post:
+      summary: Создать новую модель для бренда
+      operationId: createCarBrandModel
+      tags:
+        - CarBrandModel
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarBrandModelRequest'
+      responses:
+        '201':
+          description: Модель автомобиля создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarBrandModel'
+
+  /api/car-brands/{carBrand}/models/{carBrandModel}:
+    put:
+      summary: Обновить информацию о модели автомобиля
+      operationId: updateCarBrandModel
+      tags:
+        - CarBrandModel
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+        - name: carBrandModel
+          in: path
+          required: true
+          description: ID модели автомобиля
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarBrandModelRequest'
+      responses:
+        '200':
+          description: Модель автомобиля обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarBrandModel'
+    delete:
+      summary: Удалить модель автомобиля
+      operationId: deleteCarBrandModel
+      tags:
+        - CarBrandModel
+      parameters:
+        - name: carBrand
+          in: path
+          required: true
+          description: ID бренда автомобиля
+          schema:
+            type: integer
+        - name: carBrandModel
+          in: path
+          required: true
+          description: ID модели автомобиля
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Модель автомобиля удалена
+
+components:
+  schemas:
+    CarBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+    CarBrandRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название бренда автомобиля
+    CarBrandModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        car_brand_id:
+          type: integer
+    CarBrandModelRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название модели автомобиля
+        car_brand_id:
+          type: integer
+          description: ID бренда, к которому принадлежит модель
