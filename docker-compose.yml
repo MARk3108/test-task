@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    container_name: laravel_app
+    image: test-task/laravelapp:1.0.0
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=cars
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=marchek
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: marchek
+      POSTGRES_DB: cars
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data: {}
