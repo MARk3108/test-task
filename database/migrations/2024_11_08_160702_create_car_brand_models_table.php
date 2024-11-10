@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('car_brand_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->index(['car_brand_id', 'title']);
         });
     }
 

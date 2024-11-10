@@ -13,9 +13,11 @@ class CarBrandController extends Controller
 
     public function __construct(private CarBrandService $service) {}
 
-    public function index(): JsonResponse
+    public function index(CarBrandRequest $request): JsonResponse
     {
-        $carBrands = $this->service->getAll();
+        \Log::info($request);
+        \Log::info($request->input('title'));
+        $carBrands = $this->service->getAll($request->input('title'));
         return response()->json(CarBrandResource::collection($carBrands));
     }
 

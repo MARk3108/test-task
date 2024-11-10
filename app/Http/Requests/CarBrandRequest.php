@@ -15,7 +15,7 @@ class CarBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255|unique:car_brands,title',
+            'title' => 'nullable|string|max:255',
         ];
     }
 }

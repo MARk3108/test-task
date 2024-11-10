@@ -4,11 +4,13 @@ namespace App\Services;
 use App\Models\CarBrandModel;
 use Illuminate\Database\Eloquent\Collection;
 
-class CarBrandModelService
+class CarBrandModelService extends TitleFilterService
 {
-    public function getAll(int $carBrandId): Collection
+    public function getAll(int $carBrandId, ?string $title = null): Collection
     {
-        return CarBrandModel::where('car_brand_id', $carBrandId)->get();
+        $query = CarBrandModel::query()->where('car_brand_id', $carBrandId);
+        $query = $this->applyTitleFilter($query, $title); 
+        return $query->get();
     }
 
     public function create(array $data): CarBrandModel
