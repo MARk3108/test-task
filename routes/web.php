@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('swagger/docs/api-docs.yaml', function () {
+    $path = resource_path('swagger/api-docs.yaml');
+
+    if (!File::exists($path)) {
+        abort(404, 'Swagger YAML file not found');
+    }
+
+    return Response::file($path, [
+        'Content-Type' => 'application/x-yaml',
+    ]);
+});
