@@ -2,7 +2,7 @@ services:
   app:
     build: .
     container_name: laravel_app
-    image: test-task/laravelapp:1.0.0
+    image: test-task/laravelapp:1.0.1
     ports:
       - "8000:8000"
     environment:
