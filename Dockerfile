@@ -26,7 +26,6 @@ COPY . .
 
 # Run Composer again to autoload
 RUN composer dump-autoload --optimize
-COPY .env.example .env
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 RUN php artisan key:generate
