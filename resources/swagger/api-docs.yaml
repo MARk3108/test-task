@@ -10,6 +10,13 @@ paths:
       operationId: getCarBrands
       tags:
         - CarBrand
+      parameters:
+        - name: title
+          in: query
+          required: false
+          description: Фильтр по названию бренда автомобиля
+          schema:
+            type: string
       responses:
         '200':
           description: Список брендов автомобилей
@@ -37,6 +44,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarBrand'
+        '422':
+          description: Данный бренд уже существует
   /api/car-brands/{carBrand}:
     put:
       summary: Обновить информацию о бренде автомобиля
@@ -92,6 +101,12 @@ paths:
           description: ID бренда автомобиля
           schema:
             type: integer
+        - name: title
+          in: query
+          required: false
+          description: Фильтр по названию модели автомобиля
+          schema:
+            type: string
       responses:
         '200':
           description: Список моделей для указанного бренда
@@ -126,6 +141,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarBrandModel'
+        '422':
+          description: Данная модель уже записана данному бренду
 
   /api/car-brands/{carBrand}/models/{carBrandModel}:
     put:
@@ -159,6 +176,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarBrandModel'
+        '400':
+          description: Модель не принадлежит данному бренду
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     delete:
       summary: Удалить модель автомобиля
       operationId: deleteCarBrandModel
@@ -180,6 +206,15 @@ paths:
       responses:
         '204':
           description: Модель автомобиля удалена
+        '400':
+          description: Модель не принадлежит данному бренду
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
 components:
   schemas:
@@ -203,14 +238,9 @@ components:
           type: integer
         title:
           type: string
-        car_brand_id:
-          type: integer
     CarBrandModelRequest:
       type: object
       properties:
         title:
           type: string
           description: Название модели автомобиля
-        car_brand_id:
-          type: integer
-          description: ID бренда, к которому принадлежит модель

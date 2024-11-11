@@ -10,15 +10,16 @@ class CarBrandControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index_returns_all_brands(): void
+    public function test_index_returns_all_brands_with_filter(): void
     {
         CarBrand::create(['title' => 'Mazda']);
         CarBrand::create(['title' => 'Lada']);
 
-        $response = $this->get('/api/car-brands');
+        $response = $this->get('/api/car-brands?title=Mazda');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(2);
+        $response->assertJsonCount(1);
+        $response->assertJsonFragment(['title' => 'Mazda']);
     }
 
     public function test_store_creates_new_brand(): void

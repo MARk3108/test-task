@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarBrandRequest;
+use App\Http\Requests\CarBrandFilteredRequest;
 use App\Services\CarBrandService;
 use App\Models\CarBrand;
 use Illuminate\Http\JsonResponse;
@@ -13,10 +14,8 @@ class CarBrandController extends Controller
 
     public function __construct(private CarBrandService $service) {}
 
-    public function index(CarBrandRequest $request): JsonResponse
+    public function index(CarBrandFilteredRequest $request): JsonResponse
     {
-        \Log::info($request);
-        \Log::info($request->input('title'));
         $carBrands = $this->service->getAll($request->input('title'));
         return response()->json(CarBrandResource::collection($carBrands));
     }

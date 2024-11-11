@@ -3,19 +3,26 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use App\Exceptions\ValidationExceptionHandler;
 
 class CarBrandRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // Разрешаем выполнение запроса для всех пользователей
         return true;
     }
 
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:255',
+            'title' => 'required|string|max:255|unique:car_brands,title'
         ];
+    }
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        ValidationExceptionHandler::handle($validator);
     }
 }

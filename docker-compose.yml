@@ -6,12 +6,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DB_CONNECTION=pgsql
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_DATABASE=cars
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=marchek
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
       - db
     networks:
@@ -22,9 +22,9 @@ services:
     image: postgres:latest
     container_name: postgres_db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: marchek
-      POSTGRES_DB: cars
+      POSTGRES_USER=${DB_USERNAME}
+      POSTGRES_PASSWORD=${DB_PASSWORD}
+      POSTGRES_DB=${DB_DATABASE}
     ports:
       - "5432:5432"
     volumes:
